@@ -9,6 +9,7 @@ import { Task } from "@/types/task";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { DayProps } from "react-day-picker";
 
 const Calendar = () => {
   const { tasks } = useTaskContext();
@@ -75,18 +76,19 @@ const Calendar = () => {
               }
             }}
             components={{
-              DayContent: ({ date, ...props }) => {
-                const dateKey = format(date, "yyyy-MM-dd");
+              DayContent: (props: DayProps) => {
+                const dateKey = format(props.date, "yyyy-MM-dd");
                 const tasksForDate = datesWithTasks.get(dateKey);
+                const isSelected = selectedDate && isSameDay(props.date, selectedDate);
                 
                 return (
                   <div 
                     className={cn(
                       "relative flex h-9 w-9 items-center justify-center p-0", 
-                      props.selected && "text-primary-foreground"
+                      isSelected && "text-primary-foreground"
                     )}
                   >
-                    {props.children}
+                    {props.day.toString()}
                     {tasksForDate && (
                       <div 
                         className={cn(
